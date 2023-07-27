@@ -1,0 +1,26 @@
+name: CI/CD Pipeline
+on:
+  push:
+    branches:
+      - master
+
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: rsync deployment
+        uses: D3rHase/rsync-deploy-action@v0.2
+        with:
+            HOST: ${{ secrets.HOST }}
+            PORT: ${{ secrets.PORT }}
+            USER: ${{ secrets.USER }}
+            PRIVATE_SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+            REPOSITORY_PATH: www/*
+            SERVER_PATH: /var/www/html/
